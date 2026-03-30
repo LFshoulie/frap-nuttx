@@ -28,6 +28,10 @@
 
 #include <nuttx/sched_note.h>
 
+#ifdef CONFIG_FRAP
+#  include <nuttx/frap.h>
+#endif
+
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
@@ -74,5 +78,13 @@ void nxsched_switch_context(FAR struct tcb_s *from, FAR struct tcb_s *to)
 #ifdef CONFIG_SCHED_INSTRUMENTATION
   sched_note_suspend(from);
   sched_note_resume(to);
+#endif
+
+  /* ===== FRAP hook: cancel-on-preempt while spinning ===== */
+#ifdef CONFIG_FRAP
+  /* Only if both tcb are valid (normal case) */
+  if (from && to) {
+    frap_on_preempt(from, to);   /* 仅当真“抢占”时会生效，同优先级轮转不会触发 */
+  }
 #endif
 }

@@ -100,6 +100,13 @@ ifeq ($(CONFIG_SMP),y)
 CSRCS += sched_smp.c
 endif
 
+
+ifeq ($(CONFIG_FRAP),y)
+CSRCS += frap_core.c frap_queue.c frap_lock.c frap_schedhook.c frap_table.c
+VPATH += :frap
+DEPPATH += --dep-path frap
+endif
+
 # Include sched build support
 
 DEPPATH += --dep-path sched

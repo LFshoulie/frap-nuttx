@@ -1,0 +1,30 @@
+{
+  "scenario_name": "frap_rbtree_tlsf_mat_16_tasks",
+  "cpus": [0, 1],
+  "resources": [
+    { "id": 0, "name": "RES_RBTREE", "c": 20.0 },
+    { "id": 1, "name": "RES_TLSF",   "c": 20.0 },
+    { "id": 2, "name": "RES_MATMUL", "c": 20.0 }
+  ],
+  "tasks": [
+    { "name": "rb_0",   "pid_hint": 0,  "cpu": 0, "P": 60,  "T": 1000, "C": 20.0, "req": { "0": 1 } },
+    { "name": "rb_1",   "pid_hint": 1,  "cpu": 1, "P": 60,  "T": 1000, "C": 20.0, "req": { "0": 1 } },
+    { "name": "rb_2",   "pid_hint": 2,  "cpu": 0, "P": 60,  "T": 900,  "C": 20.0, "req": { "0": 1 } },
+    { "name": "rb_3",   "pid_hint": 3,  "cpu": 1, "P": 60,  "T": 900,  "C": 20.0, "req": { "0": 1 } },
+
+    { "name": "tlsf_0", "pid_hint": 4,  "cpu": 0, "P": 90,  "T": 800,  "C": 20.0, "req": { "1": 1 } },
+    { "name": "tlsf_1", "pid_hint": 5,  "cpu": 1, "P": 90,  "T": 800,  "C": 20.0, "req": { "1": 1 } },
+    { "name": "tlsf_2", "pid_hint": 6,  "cpu": 0, "P": 90,  "T": 700,  "C": 20.0, "req": { "1": 1 } },
+    { "name": "tlsf_3", "pid_hint": 7,  "cpu": 1, "P": 90,  "T": 700,  "C": 20.0, "req": { "1": 1 } },
+
+    { "name": "mat_0",  "pid_hint": 8,  "cpu": 0, "P": 120, "T": 600,  "C": 20.0, "req": { "2": 1 } },
+    { "name": "mat_1",  "pid_hint": 9,  "cpu": 1, "P": 120, "T": 600,  "C": 20.0, "req": { "2": 1 } },
+    { "name": "mat_2",  "pid_hint": 10, "cpu": 0, "P": 120, "T": 500,  "C": 20.0, "req": { "2": 1 } },
+    { "name": "mat_3",  "pid_hint": 11, "cpu": 1, "P": 120, "T": 500,  "C": 20.0, "req": { "2": 1 } },
+
+    { "name": "god_0",  "pid_hint": 12, "cpu": 0, "P": 180, "T": 300,  "C": 20.0, "req": { "0": 1, "1": 1, "2": 1 } },
+    { "name": "god_1",  "pid_hint": 13, "cpu": 1, "P": 180, "T": 280,  "C": 20.0, "req": { "0": 1, "1": 1, "2": 1 } },
+    { "name": "god_2",  "pid_hint": 14, "cpu": 0, "P": 180, "T": 260,  "C": 20.0, "req": { "0": 1, "1": 1, "2": 1 } },
+    { "name": "god_3",  "pid_hint": 15, "cpu": 1, "P": 180, "T": 240,  "C": 20.0, "req": { "0": 1, "1": 1, "2": 1 } }
+  ]
+}
