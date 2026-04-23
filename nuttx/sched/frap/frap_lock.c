@@ -113,13 +113,13 @@ int frap_lock(FAR struct frap_res *r)
 
       if (can_enter)
         {
+           /* R2: 非抢占执行临界段（同核不可被更高优先级打断） */
+          sched_lock();
+          tcb->frap_in_cs = true;
+
           /* 从队列摘除并占有资源 */
           frap_queue_remove(r, tcb);
           r->owner = tcb;
-
-          /* R2: 非抢占执行临界段（同核不可被更高优先级打断） */
-          sched_lock();
-          tcb->frap_in_cs = true;
 
           spin_unlock_irqrestore(&r->sl, flags);
 
@@ -155,14 +155,14 @@ void frap_unlock(FAR struct frap_res *r)
   DEBUGASSERT(r->owner == tcb);
   DEBUGASSERT(tcb->frap_in_cs);
 
-  /* 先退出非抢占区，再释放资源 */
-  tcb->frap_in_cs = false;
-  sched_unlock();
-
   /* 清空 owner，唤醒后续等待者由其自行争抢 */
   flags    = spin_lock_irqsave(&r->sl);
   r->owner = NULL;
   spin_unlock_irqrestore(&r->sl, flags);
+
+  /* 先退出非抢占区，再释放资源 */
+  tcb->frap_in_cs = false;
+  sched_unlock();
 
   /* 恢复基准优先级 P_i */
   frap_set_prio(tcb, tcb->frap_base_prio);
